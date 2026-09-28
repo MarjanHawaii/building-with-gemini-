@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MGT 450 - Family Business</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --surface: #ffffff;
+            --surface-elevated: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --primary: #1e3a8a;
+            --primary-light: #e0f2fe;
+            --primary-border: #bae6fd;
+            --accent-yellow: #d97706;
+            --accent-yellow-light: #fffbeb;
+            --accent-yellow-border: #fde68a;
+            --border: #e2e8f0;
+            --radius-lg: 0.875rem;
+            --radius-md: 0.5rem;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0b0f19;
+                --surface: #111827;
+                --surface-elevated: #1f2937;
+                --text-main: #f9fafb;
+                --text-muted: #9ca3af;
+                --primary: #3b82f6;
+                --primary-light: #1e293b;
+                --primary-border: #334155;
+                --accent-yellow: #fbbf24;
+                --accent-yellow-light: #2d2305;
+                --accent-yellow-border: #78350f;
+                --border: #1f2937;
+            }
+
+            .hero {
+                background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+                border-color: #334155 !important;
+            }
+
+            .hero h1 {
+                color: #60a5fa !important;
+            }
+
+            .hero .subtitle {
+                color: #60a5fa !important;
+            }
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            font-size: 1rem;
+        }
+
+        nav {
+            background-color: var(--surface);
+            backdrop-filter: blur(8px);
+            border-bottom: 2px solid var(--accent-yellow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0.6rem 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            padding: 0.4rem 0.85rem;
+            border-radius: 9999px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        nav a:hover, nav a:focus {
+            background-color: var(--primary);
+            color: #ffffff;
+            border-color: var(--accent-yellow);
+        }
+
+        main {
+            max-width: 920px;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 2.5rem 1.25rem;
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            color: #0f172a;
+            border-radius: var(--radius-lg);
+            border: 1px solid #bae6fd;
+            border-bottom: 4px solid var(--accent-yellow);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 2.1rem;
+            margin: 0 0 0.35rem 0;
+            color: #1e3a8a;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        section {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            scroll-margin-top: 4.5rem;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            color: var(--primary);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--accent-yellow-border);
+        }
+
+        h3 {
+            font-size: 1.05rem;
+            color: var(--primary);
+            margin-top: 1.25rem;
+            margin-bottom: 0.4rem;
+        }
+
+        /* Simplified Glance Section */
+        .glance-simple-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            background-color: var(--bg-color);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .glance-item {
+            font-size: 0.95rem;
+        }
+
+        .glance-item strong {
+            color: var(--primary);
+            min-width: 110px;
+            display: inline-block;
+        }
+
+        .materials-note {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.45;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 0.5rem;
+            font-size: 0.925rem;
+        }
+
+        th {
+            background-color: var(--bg-color);
+            color: var(--primary);
+            font-weight: 700;
+            text-align: left;
+            padding: 0.65rem 0.75rem;
+            border-bottom: 2px solid var(--border);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.04em;
+        }
+
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        .date-badge {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--primary);
+            color: #ffffff;
+            width: 60px;
+            padding: 0.3rem 0.1rem;
+            border-radius: var(--radius-md);
+            text-align: center;
+            border-top: 2px solid var(--accent-yellow);
+        }
+
+        .date-badge .month {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .date-badge .day {
+            font-size: 1.1rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background-color: var(--accent-yellow-light);
+            color: var(--accent-yellow);
+            border: 1px solid var(--accent-yellow-border);
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 0.25rem;
+            margin-top: 0.2rem;
+        }
+
+        a.button-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 0.65rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            border-bottom: 2px solid var(--accent-yellow);
+            transition: all 0.2s ease;
+        }
+
+        a.button-link:hover {
+            filter: brightness(1.1);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 640px) {
+            th { display: none; }
+            table, tbody, tr, td { display: block; width: 100%; }
+            tr {
+                border: 1px solid var(--border);
+                border-radius: var(--radius-md);
+                margin-bottom: 0.75rem;
+                padding: 0.5rem;
+            }
+            td { border-bottom: 1px solid var(--border); padding: 0.4rem 0; }
+            td:last-child { border-bottom: none; }
+            td::before {
+                content: attr(data-label);
+                font-weight: 700;
+                font-size: 0.7rem;
+                text-transform: uppercase;
+                color: var(--text-muted);
+                display: block;
+            }
+            .date-badge { flex-direction: row; gap: 0.3rem; width: auto; padding: 0.2rem 0.5rem; }
+            .date-badge .day { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav aria-label="Main Navigation">
+        <a href="#glance">Course at a glance</a>
+        <a href="#schedule">Weekly schedule</a>
+        <a href="#grades">Grades</a>
+        <a href="#policies">Policies</a>
+        <a href="#practice">Practice</a>
+    </nav>
+
+    <main>
+        <div class="hero" id="top">
+            <h1>MGT 450: Family Business</h1>
+            <div class="subtitle">Dr. Marjan Houshmand &bull; Spring 2027</div>
+        </div>
+
+        <section id="glance">
+            <h2>Course at a glance</h2>
+            <div class="glance-simple-list">
+                <div class="glance-item"><strong>Instructor:</strong> Dr. Marjan Houshmand</div>
+                <div class="glance-item"><strong>Email:</strong> <a href="mailto:marjanh@hawaii.edu" style="color: var(--primary); text-decoration: none; font-weight: 600;">marjanh@hawaii.edu</a></div>
+                <div class="glance-item"><strong>Office Hours:</strong> After class and by appointment</div>
+            </div>
+            <p class="materials-note">
+                <strong>Course Materials:</strong> Cases and readings are available on Coursepack (Harvard Business School Case Service). Additional material will be provided electronically or as a handout.
+            </p>
+        </section>
+
+        <section id="schedule">
+            <h2>Weekly schedule</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 85px;">Date</th>
+                        <th>Topics</th>
+                        <th>Mandatory Readings</th>
+                        <th>Important Dates</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">JAN</span><span class="day">13</span></div></td>
+                        <td data-label="Topics">Introduction to the Course; Ice Breaker, Class Tenets, and Personal Goals</td>
+                        <td data-label="Mandatory Readings"></td>
+                        <td data-label="Important Dates">Student information sheet due Jan 21. Include your personal goals for the class on the information sheet.st (counts as the Engagement Assignment Week 1)</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">JAN</span><span class="day">20</span></div></td>
+                        <td data-label="Topics">Family Business Systems</td>
+                        <td data-label="Mandatory Readings">Meet the Glocks (Lamaku)<br>Case Discussion: “Is This for Me? Career Decision Making in a Family Business”</td>
+                        <td data-label="Important Dates"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">JAN</span><span class="day">27</span></div></td>
+                        <td data-label="Topics">Ownership Structure and Governance</td>
+                        <td data-label="Mandatory Readings">Case Discussion: “The Harilela Enterprises”</td>
+                        <td data-label="Important Dates"><span class="badge-tag">Action Required</span><br>Notify the instructor about your plan about Family Business Film Exercise and Family Business Example</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">FEB</span><span class="day">03</span></div></td>
+                        <td data-label="Topics">Communication, Different Generations</td>
+                        <td data-label="Mandatory Readings">Case Discussion: “Ruma's Fruit And Gift Basket World: Will Dad Ever Talk To Me?”</td>
+                        <td data-label="Important Dates"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">FEB</span><span class="day">10</span></div></td>
+                        <td data-label="Topics">Communication, Family Meetings, Family Councils</td>
+                        <td data-label="Mandatory Readings">Case Discussion: “Scholtes Waterservices”</td>
+                        <td data-label="Important Dates"><span class="badge-tag">Presentation</span><br>Project proposals presentations</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">FEB</span><span class="day">17</span></div></td>
+                        <td data-label="Topics">Succession: Transfer of Power</td>
+                        <td data-label="Mandatory Readings">Case Discussion: “Agnellis and the Fiat Group: The Story of a Family Empire (A)”</td>
+                        <td data-label="Important Dates"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">FEB</span><span class="day">24</span></div></td>
+                        <td data-label="Topics">Succession Planning</td>
+                        <td data-label="Mandatory Readings">Case Discussion: “De Kuyper Royal Distillers: Three Centuries of Succession”</td>
+                        <td data-label="Important Dates"><span class="badge-tag">Due Date</span><br>Case 1 write-up due</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">MAR</span><span class="day">03</span></div></td>
+                        <td data-label="Topics">Financial Management and Estate Planning in Family-Controlled Businesses</td>
+                        <td data-label="Mandatory Readings">Case Discussion: Arthur Sulzberger Jr. (Video in class) and “The New York Times”</td>
+                        <td data-label="Important Dates"><span class="badge-tag">Due Date</span><br>Progress report due</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">MAR</span><span class="day">10</span></div></td>
+                        <td data-label="Topics">In-laws in Family Business</td>
+                        <td data-label="Mandatory Readings">Case Discussion: “Aurum Furniture And In-Law Management”</td>
+                        <td data-label="Important Dates"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge" style="opacity: 0.6;"><span class="month">MAR</span><span class="day">17</span></div></td>
+                        <td data-label="Topics"><strong>Spring Break</strong></td>
+                        <td data-label="Mandatory Readings"><em>No class</em></td>
+                        <td data-label="Important Dates"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">MAR</span><span class="day">24</span></div></td>
+                        <td data-label="Topics">Women in FB/Work life balance</td>
+                        <td data-label="Mandatory Readings">Case Discussion: “Lee Kum Kee: Female Succession in Family Business”<br><small style="color: var(--text-muted);">Optional: Richlin, Arguments with Silence...</small></td>
+                        <td data-label="Important Dates"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">MAR</span><span class="day">31</span></div></td>
+                        <td data-label="Topics">Family Business Complexity, Values</td>
+                        <td data-label="Mandatory Readings">Family Business Honey Heritage Simulation and Rainbow Drive In</td>
+                        <td data-label="Important Dates"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">APR</span><span class="day">07</span></div></td>
+                        <td data-label="Topics">Team Day</td>
+                        <td data-label="Mandatory Readings"></td>
+                        <td data-label="Important Dates"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">APR</span><span class="day">14</span></div></td>
+                        <td data-label="Topics">Vision for the Future</td>
+                        <td data-label="Mandatory Readings">Case Discussion: “The Future of Bush Brothers & Company”</td>
+                        <td data-label="Important Dates"><span class="badge-tag">Due Date</span><br>Case 2 write-up due</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">APR</span><span class="day">21</span></div></td>
+                        <td data-label="Topics">Group Presentations (Hoʻike)</td>
+                        <td data-label="Mandatory Readings">-</td>
+                        <td data-label="Important Dates"><span class="badge-tag">Due Date</span><br>Group Report</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Date"><div class="date-badge"><span class="month">APR</span><span class="day">28</span></div></td>
+                        <td data-label="Topics">Wrap-up; Return to Class Tenets and Personal Goals</td>
+                        <td data-label="Mandatory Readings"></td>
+                        <td data-label="Important Dates"><span class="badge-tag">Due Date</span><br>Personal Reflection due</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="grades">
+            <h2>How grades work</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Component</th>
+                        <th>Weight</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="Category" rowspan="7"><strong>Individual (60%)</strong></td>
+                        <td data-label="Component">Active Learning</td>
+                        <td data-label="Weight">10%</td>
+                    </tr>
+                    <tr><td data-label="Component">Family Business Example</td><td data-label="Weight">5%</td></tr>
+                    <tr><td data-label="Component">Two Case Assignments</td><td data-label="Weight">10%</td></tr>
+                    <tr><td data-label="Component">In Class Group Reports</td><td data-label="Weight">10%</td></tr>
+                    <tr><td data-label="Component">Family Business Film Exercise</td><td data-label="Weight">5%</td></tr>
+                    <tr><td data-label="Component">Project Proposal</td><td data-label="Weight">5%</td></tr>
+                    <tr><td data-label="Component">Personal Reflection</td><td data-label="Weight">15%</td></tr>
+                    <tr style="border-top: 2px solid var(--border);">
+                        <td data-label="Category" rowspan="2"><strong>Group (40%)</strong></td>
+                        <td data-label="Component">Group Report</td>
+                        <td data-label="Weight">25%</td>
+                    </tr>
+                    <tr><td data-label="Component">Group Presentation</td><td data-label="Weight">15%</td></tr>
+                </tbody>
+            </table>
+            <p><small style="color: var(--text-muted);"><em>The instructor reserves the right to give students bonus credit based on exceptional performance, and to award "+" and "-" grades when deemed appropriate.</em></small></p>
+        </section>
+
+        <section id="policies">
+            <h2>Policies</h2>
+            
+            <h3>Group Structure and Rewards</h3>
+            <p>Groups structure themselves. Members share rewards equally. It's the group's responsibility to ensure adequate contribution. Document and report non-contributing members by April 4th to marjanh@hawaii.edu if necessary. Non-contributing members will be penalized.</p>
+
+            <h3>Re-reads of Graded Coursework</h3>
+            <p>Submit a brief written summary with your marked work for a re-read. Grades may go up or down upon re-read from scratch. Components are final one week after being returned. No personal lobbying; discussions are for educational purposes only.</p>
+
+            <h3>Academic Dishonesty</h3>
+            <p>Subject to UH Student Conduct Code. Includes cheating (unauthorized assistance, falsifying records, etc.) and plagiarism (submitting others' work as your own without attribution). Ignorance is no excuse.</p>
+
+            <h3>AI Usage Policy</h3>
+            <p>AI tools permitted for brainstorming, preliminary research, or proofreading if properly acknowledged. Students are responsible for originality and accuracy. Verify AI information through credible references. Relying too heavily on AI may undermine learning.</p>
+            
+            <h3>Safety</h3>
+            <p>In case of a bomb threat/scare requiring evacuation, meet in the small street near the moped parking area on the Makai side of the building.</p>
+
+            <h3>Disability Access</h3>
+            <p>Contact KOKUA Program (956-7511, kokua@hawaii.edu, Student Services Center, Room 13) for confidential, free services.</p>
+            
+            <h3>Other</h3>
+            <p>No recording or taping of the class without the instructor’s permission.</p>
+        </section>
+
+        <section id="practice">
+            <h2>Practice</h2>
+            <p>Test your understanding of course concepts with practice exercises.</p>
+            <a href="quiz.html" class="button-link">
+                <span>Practice quiz</span>
+                <span>&rarr;</span>
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        Dr. Marjan Houshmand &copy; 2027
+    </footer>
+
+    <script>
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

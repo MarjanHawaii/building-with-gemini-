@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MGT 450 Practice Quiz - Communication</title>
+    <style>
+        :root {
+            --primary-color: #003366;
+            --background-color: #f4f7f6;
+            --card-background: #ffffff;
+            --text-color: #333333;
+            --correct-color: #2e7d32;
+            --incorrect-color: #c62828;
+            --hover-color: #e3f2fd;
+            --border-radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-size: 18px; /* Large readable text */
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            font-weight: normal;
+            opacity: 0.9;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            width: 100%;
+            max-w-width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+        }
+
+        #question-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        button.option-btn {
+            background-color: white;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        button.option-btn:hover:not(:disabled) {
+            background-color: var(--hover-color);
+            border-color: var(--primary-color);
+        }
+
+        button.option-btn:disabled {
+            cursor: default;
+        }
+
+        .key-hint {
+            display: inline-block;
+            background-color: #eee;
+            color: #666;
+            border-radius: 4px;
+            padding: 2px 8px;
+            margin-right: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* Feedback Styles */
+        .feedback-section {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            display: none;
+        }
+
+        .feedback-section.show {
+            display: block;
+        }
+
+        .feedback-correct {
+            background-color: #e8f5e9;
+            border: 2px solid var(--correct-color);
+        }
+
+        .feedback-incorrect {
+            background-color: #ffebee;
+            border: 2px solid var(--incorrect-color);
+        }
+
+        .feedback-status {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .feedback-correct .feedback-status { color: var(--correct-color); }
+        .feedback-incorrect .feedback-status { color: var(--incorrect-color); }
+
+        .explanation {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* End Screen Styles */
+        #end-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .score-display {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 20px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Course: MGT 450</h1>
+        <h2>Topic: Communication</h2>
+    </header>
+
+    <main>
+        <div class="card">
+            <!-- Quiz View -->
+            <div id="quiz-screen">
+                <div id="progress" style="color: #666; font-size: 1rem; margin-bottom: 10px;">Question 1 of 10</div>
+                <div id="question-text">Loading question...</div>
+                
+                <div class="options-grid" id="options-container">
+                    <!-- Options injected via JS -->
+                </div>
+
+                <div id="feedback-container" class="feedback-section">
+                    <div id="feedback-status" class="feedback-status"></div>
+                    <div id="feedback-explanation" class="explanation"></div>
+                    <button id="next-btn" class="action-btn">Next Question <span style="font-size: 0.9rem; font-weight: normal; margin-left: 10px; opacity: 0.8;">(Press Enter)</span></button>
+                </div>
+            </div>
+
+            <!-- End View -->
+            <div id="end-screen">
+                <h2>Quiz Complete!</h2>
+                <div class="score-display">
+                    <span id="final-score">0</span> / 10
+                </div>
+                <p style="margin-bottom: 30px; font-size: 1.2rem;">Great job reviewing your knowledge on Family Business Communication.</p>
+                <button id="restart-btn" class="action-btn">Try again</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        Made by Dr. Houshmand with Gemini
+    </footer>
+
+    <script>
+        // EDIT YOUR QUESTIONS HERE
+        const quizData = [
+            {
+                question: "What is a common challenge for communication in family businesses?",
+                options: [
+                    "Over-reliance on formal written memos.",
+                    "Blurring the lines between family roles and business roles.",
+                    "Too much focus on quarterly stock market earnings.",
+                    "Strict separation of work and home life."
+                ],
+                correctAnswerIndex: 1,
+                explanation: "Family businesses often struggle with role overlap, making it difficult to separate family discussions from professional business communication."
+            },
+            {
+                question: "Which forum is specifically designed to discuss family-related issues, values, and policies outside of daily business operations?",
+                options: [
+                    "Board of Directors",
+                    "Management Executive Committee",
+                    "Family Council",
+                    "Shareholder Assembly"
+                ],
+                correctAnswerIndex: 2,
+                explanation: "A Family Council provides a structured environment for family members to communicate about family values, policies, and their relationship to the business."
+            },
+            {
+                question: "What does 'active listening' primarily involve in a family business context?",
+                options: [
+                    "Fully concentrating, understanding, and responding to what is being said.",
+                    "Waiting silently for your turn to speak.",
+                    "Interrupting to correct factual errors immediately.",
+                    "Agreeing with whatever the senior generation proposes."
+                ],
+                correctAnswerIndex: 0,
+                explanation: "Active listening requires full engagement and comprehension of the speaker's message, which is vital for resolving complex family conflicts."
+            },
+            {
+                question: "Why are regular family meetings important for a family business?",
+                options: [
+                    "They legally replace the board of directors.",
+                    "They guarantee that all family members will agree on every decision.",
+                    "They are required by federal corporate law.",
+                    "They create a safe, structured space for open communication and conflict resolution."
+                ],
+                correctAnswerIndex: 3,
+                explanation: "Regular family meetings foster transparency and provide a dedicated time to address issues before they escalate into major conflicts."
+            },
+            {
+                question: "What is 'triangulation' in family business communication?",
+                options: [
+                    "A three-step formal negotiation process.",
+                    "When two people communicate through a third person instead of directly with each other.",
+                    "A financial strategy involving three separate bank accounts.",
+                    "The balance between family, business, and ownership systems."
+                ],
+                correctAnswerIndex: 1,
+                explanation: "Triangulation is an unhealthy communication pattern where a third party is drawn into a conflict, often leading to misunderstandings and increased tension."
+            },
+            {
+                question: "How should constructive feedback be delivered to a family member employee?",
+                options: [
+                    "During a family dinner so it feels casual.",
+                    "Through an anonymous email.",
+                    "In a professional setting using objective, behavior-based criteria.",
+                    "By bringing up past childhood mistakes as examples."
+                ],
+                correctAnswerIndex: 2,
+                explanation: "Delivering feedback professionally helps separate personal family dynamics from objective business performance evaluation."
+            },
+            {
+                question: "In the context of succession, why is transparent communication critical?",
+                options: [
+                    "It prevents the need for a legal will.",
+                    "It manages expectations and reduces anxiety among both family and non-family employees.",
+                    "It ensures the media gets the story first.",
+                    "It guarantees the eldest child will take over."
+                ],
+                correctAnswerIndex: 1,
+                explanation: "Open communication about succession plans clarifies the future direction of the company, alleviating uncertainty for all stakeholders."
+            },
+            {
+                question: "What role does a 'family constitution' or 'charter' play in communication?",
+                options: [
+                    "It documents agreed-upon rules and values to guide future family interactions and decisions.",
+                    "It dictates daily operational decisions.",
+                    "It replaces standard employment contracts.",
+                    "It lists the passwords for the company's social media accounts."
+                ],
+                correctAnswerIndex: 0,
+                explanation: "A family charter acts as a written agreement that clarifies expectations and communication protocols for the family system."
+            },
+            {
+                question: "Which of the following is a common communication barrier between different generations in a family firm?",
+                options: [
+                    "Having the exact same vision for the company's future.",
+                    "Sharing the same historical references and experiences.",
+                    "Both generations wanting to retire at the same time.",
+                    "Differing assumptions about the use of technology and work-life balance."
+                ],
+                correctAnswerIndex: 3,
+                explanation: "Generational differences in values, technological comfort, and communication styles frequently create misunderstandings in family firms."
+            },
+            {
+                question: "When managing conflict, what does separating the 'people from the problem' mean?",
+                options: [
+                    "Firing family members who cause trouble.",
+                    "Focusing on resolving the specific business issue rather than attacking a person's character.",
+                    "Ignoring emotional responses completely.",
+                    "Moving the discussion to a different room."
+                ],
+                correctAnswerIndex: 1,
+                explanation: "This negotiation principle encourages families to tackle issues objectively without damaging personal relationships through personal attacks."
+            }
+        ];
+
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let state = 'question'; // 'question', 'feedback', 'end'
+
+        // DOM Elements
+        const quizScreen = document.getElementById('quiz-screen');
+        const endScreen = document.getElementById('end-screen');
+        const progressEl = document.getElementById('progress');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const feedbackStatus = document.getElementById('feedback-status');
+        const feedbackExplanation = document.getElementById('feedback-explanation');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const finalScoreEl = document.getElementById('final-score');
+
+        function shuffleArray(array) {
+            let curId = array.length;
+            while (0 !== curId) {
+                let randId = Math.floor(Math.random() * curId);
+                curId -= 1;
+                let tmp = array[curId];
+                array[curId] = array[randId];
+                array[randId] = tmp;
+            }
+            return array;
+        }
+
+        function initQuiz() {
+            // Create a copy of the questions and shuffle them
+            questions = shuffleArray([...quizData]);
+            currentQuestionIndex = 0;
+            score = 0;
+            quizScreen.classList.remove('hidden');
+            endScreen.style.display = 'none';
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            state = 'question';
+            feedbackContainer.classList.remove('show');
+            feedbackContainer.className = 'feedback-section'; // reset classes
+            optionsContainer.innerHTML = '';
+            
+            const currentQuestion = questions[currentQuestionIndex];
+            progressEl.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+            questionTextEl.textContent = currentQuestion.question;
+
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.innerHTML = `<span class="key-hint">${index + 1}</span> ${option}`;
+                button.onclick = () => handleAnswer(index, button);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function handleAnswer(selectedIndex, selectedButton = null) {
+            if (state !== 'question') return;
+            state = 'feedback';
+
+            const currentQuestion = questions[currentQuestionIndex];
+            const buttons = optionsContainer.querySelectorAll('.option-btn');
+            
+            // Disable all buttons
+            buttons.forEach(btn => btn.disabled = true);
+
+            // Check answer
+            const isCorrect = selectedIndex === currentQuestion.correctAnswerIndex;
+            
+            if (isCorrect) {
+                score++;
+                feedbackStatus.textContent = "Correct!";
+                feedbackContainer.classList.add('feedback-correct');
+                if (selectedButton) selectedButton.style.backgroundColor = '#e8f5e9';
+                if (selectedButton) selectedButton.style.borderColor = 'var(--correct-color)';
+            } else {
+                feedbackStatus.textContent = "Incorrect.";
+                feedbackContainer.classList.add('feedback-incorrect');
+                if (selectedButton) selectedButton.style.backgroundColor = '#ffebee';
+                if (selectedButton) selectedButton.style.borderColor = 'var(--incorrect-color)';
+                
+                // Highlight correct answer
+                buttons[currentQuestion.correctAnswerIndex].style.backgroundColor = '#e8f5e9';
+                buttons[currentQuestion.correctAnswerIndex].style.borderColor = 'var(--correct-color)';
+            }
+
+            feedbackExplanation.textContent = currentQuestion.explanation;
+            feedbackContainer.classList.add('show');
+            
+            // Scroll to feedback if needed on small screens
+            feedbackContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                renderQuestion();
+            } else {
+                showEndScreen();
+            }
+        }
+
+        function showEndScreen() {
+            state = 'end';
+            quizScreen.classList.add('hidden');
+            endScreen.style.display = 'block';
+            finalScoreEl.textContent = score;
+        }
+
+        nextBtn.addEventListener('click', nextQuestion);
+        restartBtn.addEventListener('click', initQuiz);
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (state === 'question') {
+                // Keys 1 to 4
+                if (['1', '2', '3', '4'].includes(e.key)) {
+                    const index = parseInt(e.key) - 1;
+                    const buttons = optionsContainer.querySelectorAll('.option-btn');
+                    if (buttons[index]) {
+                        handleAnswer(index, buttons[index]);
+                    }
+                }
+            } else if (state === 'feedback') {
+                // Enter to go to next question
+                if (e.key === 'Enter') {
+                    nextQuestion();
+                }
+            } else if (state === 'end') {
+                // Enter to restart
+                if (e.key === 'Enter') {
+                    initQuiz();
+                }
+            }
+        });
+
+        // Start the quiz
+        initQuiz();
+
+    </script>
+</body>
+</html>
